@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   XYPlot,
   XAxis,
@@ -8,16 +8,28 @@ import {
   VerticalGridLines,
   LineSeries,
 } from "react-vis";
+import TrendSelection from "./components/TrendSelection";
 import "./App.css";
 
 const MainPage = () => {
+  const [trend, setTrend] = useState("Trend 1");
+
+  const handleChange = (event) => {
+    setTrend(event.target.value);
+    console.log(`current selected trend is: ${event.target.value}`);
+  };
+
   return (
     <>
       <div className="App-header">
         <h1>CovidProject</h1>
       </div>
       <div className="CenterScreen">
-        <XYPlot width={600} height={500}>
+        <TrendSelection display={trend} handleChange={handleChange} />
+        <XYPlot
+          width={window.innerWidth * 0.8}
+          height={window.innerHeight * 0.8}
+        >
           <HorizontalGridLines />
           <VerticalGridLines />
           <XAxis />
