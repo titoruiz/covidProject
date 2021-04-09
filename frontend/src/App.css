@@ -7,14 +7,12 @@ Body {
 }
 
 .App {
-  display: flex;
   justify-content: space-around;
 }
 
 .CenterScreen {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
   min-height: 100vh;
@@ -30,8 +28,41 @@ Body {
   color: white;
 }
 
+div#AboutSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+}
+
+.AboutTitle {
+  position: relative;
+  margin-bottom: 0px;
+}
+
+.DatasetsTitle {
+  position: relative;
+  margin-bottom: 0px;
+}
+
+.LinksTitle {
+  position: relative;
+  margin-bottom: 0px;
+}
+
+p {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+a {
+  color: orange;
+}
+
 .Title {
   font-size: calc(50px + 2vmin);
+  margin-bottom: 25px;
 }
 
 .App-link {
