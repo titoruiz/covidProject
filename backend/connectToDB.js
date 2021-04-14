@@ -1,3 +1,4 @@
+"use-strict";
 const oracledb = require("oracledb");
 
 const connectToDb = async (user, pass) => {
