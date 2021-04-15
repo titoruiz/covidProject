@@ -14,6 +14,7 @@ const PORT = 5000;
 
 //enable cross-origin requests
 app.use(cors());
+
 //lets log what requests we are getting
 app.use((req, res, next) => {
   console.log(`${req.method}: ${req.originalUrl}`);
@@ -31,16 +32,13 @@ oracledb.initOracleClient({
 connectToDB(secrets.user, secrets.password).then((connection) => {
   //express routes
 
-  //serve the static files here from the webpage
-  app.get("/", (req, res) => {
-    connection.execute(`SELECT * FROM Country`).then((result) => {
-      console.log(result.rows);
-      res.send("Hello, World!");
-    });
-  });
+  //serve the static files here from the webpage if in production
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../frontend/build")));
+  }
 
   //api endpoints to retrieve information from the database
-  app.get("/api/one/:id", (req, res) => {
+  app.get("/api/one/:season/:povertyRate", (req, res) => {
     connection
       .execute(
         'SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata GROUP BY dates ORDER BY dates'
