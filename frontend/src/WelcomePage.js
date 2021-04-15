@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import NavBar from "./NavBar"
+import NavBar from "./components/NavBar";
 
 const WelcomePage = () => {
   return (
     <div className="App">
-      <NavBar/>
+      <NavBar />
       <header className="App-header">
         <p className="Title">Covid-Project</p>
       </header>

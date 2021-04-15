@@ -3,6 +3,7 @@ import axios from "axios";
 import { XYPlot, XAxis, YAxis, ChartLabel, LineSeries } from "react-vis";
 import TrendSelection from "./components/TrendSelection";
 import TrendOptionsSelection from "./components/TrendOptionsSelection";
+import NavBar from "./components/NavBar";
 import "./App.css";
 
 //determine what the backend url is:
@@ -71,9 +72,7 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="App-header">
-        <h1>CovidProject</h1>
-      </div>
+      <NavBar></NavBar>
       <div className="CenterScreen">
         <TrendSelection display={trend} handleChange={handleTrendChange} />
         <TrendOptionsSelection
