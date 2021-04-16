@@ -1,0 +1,48 @@
+.query{
+    color: white;
+    text-align: center;
+}
+
+.text{
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+}
+
+.button-box{
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+
+.button{
+    color: rgb(47, 47, 54);
+    background: orchid;
+    width: 90px;
+    height: 50px;
+    margin: 25px;
+    outline: none;
+    border: 2px;
+    border-color: red;
+    border-radius: 5px;
+}
+
+.button:hover{
+    background: rgb(124, 40, 121);
+}
+
+.submit{
+    color: rgb(255, 255, 255);
+    background: rgb(216, 23, 155);
+    width: 90px;
+    height: 50px;
+    margin: 25px;
+    outline: none;
+    border: 2px;
+    border-color: white;
+    border-radius: 5px;
+}
+.submit:hover{
+    background: rgb(48, 170, 140);
+}
