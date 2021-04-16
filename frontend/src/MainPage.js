@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  ChartLabel,
-  LineSeries,
-  DiscreteColorLegend,
-} from "react-vis";
+import { XYPlot, XAxis, YAxis, ChartLabel, LineSeries } from "react-vis";
 import TrendSelection from "./components/TrendSelection";
+import TrendLegend from "./components/TrendLegend";
 import TrendOptionsSelection from "./components/TrendOptionsSelection";
 import NavBar from "./components/NavBar";
 import "./App.css";
@@ -98,8 +92,16 @@ const MainPage = () => {
         .then((response) => {
           console.log("here");
           console.log(response.data);
-          setChartData(response.data[0]);
-          setChartData2(response.data[1]);
+          setChartData(
+            response.data[0].map((element, index) => {
+              return { x: index, y: element["numcases"] };
+            })
+          );
+          setChartData2(
+            response.data[1].map((element, index) => {
+              return { x: index, y: element["numcases"] };
+            })
+          );
         });
     } else if (trend === "Trend 5") {
       axios.get(`${BACKEND_URL}/api/five/asdf`).then((response) => {
@@ -154,12 +156,7 @@ const MainPage = () => {
             style={{ stroke: "red", strokeWidth: 3 }}
             data={chartData2}
           />
-          <DiscreteColorLegend
-            items={[
-              { title: "Data 1", color: "violet" },
-              { title: "Data 2", color: "red" },
-            ]}
-          />
+          <TrendLegend trend={trend} />
         </XYPlot>
       </div>
     </>

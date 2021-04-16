@@ -94,12 +94,10 @@ connectToDB(secrets.user, secrets.password).then((connection) => {
   //this will return two results array will look like this:
   // [arr_for_graph_1, arr_for_graph_2]
   app.get("/api/four/:smokerPercentage/:medianAge", (req, res) => {
-    let ans = [];
-
     connection
       .execute(
         `
-    SELECT SUM(countrycoviddata.newCases) as "Total COVID-19 Cases", 
+    SELECT SUM(countrycoviddata.newCases) as "numcases", 
     countrycoviddata.dates as "Dates"
     FROM TITO.countryhealthstats, TITO.countrycoviddata, TITO.country
     WHERE countryhealthstats.iso = country.iso AND country.iso = countrycoviddata.iso_key
@@ -110,12 +108,10 @@ connectToDB(secrets.user, secrets.password).then((connection) => {
     `
       )
       .then((result) => {
-        ans.push(result.rows.filter((element) => element["numcases"] !== null));
-
         connection
           .execute(
             `
-        SELECT SUM(countrycoviddata.newCases) as "Total COVID-19 Cases", 
+        SELECT SUM(countrycoviddata.newCases) as "numcases", 
         countrycoviddata.dates as "Dates"
         FROM TITO.countryhealthstats, TITO.countrycoviddata, TITO.country
         WHERE countryhealthstats.iso = country.iso
@@ -127,9 +123,10 @@ connectToDB(secrets.user, secrets.password).then((connection) => {
         `
           )
           .then((result2) => {
-            ans.push(
-              result2.rows.filter((element) => element["numcases"] !== null)
-            );
+            res.send([
+              result.rows.filter((element) => element["numcases"] !== null),
+              result2.rows.filter((element) => element["numcases"] !== null),
+            ]);
           });
       });
   });
