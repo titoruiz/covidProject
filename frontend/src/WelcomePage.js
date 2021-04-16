@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import NavBar from "./NavBar"
+import NavBar from "./components/NavBar";
 
 const WelcomePage = () => {
   return (
     <div className="App">
-      <NavBar/>
+      <NavBar />
       <header className="App-header">
         <p className="Title">Covid-Project</p>
       </header>
@@ -18,13 +17,6 @@ const WelcomePage = () => {
           web app that would benefit usersOur team wanted to create a web app
           that would benefit usersOur team wanted to create a web app that would
           benefit usersOur team wanted to create a web app that would benefit
-          usersOur team wanted to create a web app that would benefit usersOur
-          team wanted to create a web app that would benefit usersOur team
-          wanted to create a web app that would benefit usersOur team wanted to
-          create a web app that would benefit usersOur team wanted to create a
-          web app that would benefit usersOur team wanted to create a web app
-          that would benefit usersOur team wanted to create a web app that would
-          benefit users
         </p>
         <h2 className="DatasetsTitle">Datasets Utilized:</h2>
         <p>

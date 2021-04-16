@@ -49,24 +49,131 @@ connectToDB(secrets.user, secrets.password).then((connection) => {
       });
   });
 
-  app.get("/api/two/:id", (req, res) => {
-    console.log(req.params.id);
-    res.send("in endpoint two");
+  app.get("/api/two/:lowerBound/:upperBound", (req, res) => {
+    connection
+      .execute(
+        `select TITO.countycovidcases.daterecorded as "day" , sum(TITO.countycovidcases.cases) as "numcases"
+      from (SELECT fips_county,
+         PERCENT_RANK() 
+          OVER (PARTITION BY state_fk ORDER BY elevation DESC) 
+            "Percentile Rank"
+         FROM TITO.county), TITO.countycovidcases
+      where "Percentile Rank" < ${req.params.upperBound}
+          and "Percentile Rank" > ${req.params.lowerBound}
+          and fips_county = TITO.countycovidcases.fips_fkey
+      group by TITO.countycovidcases.daterecorded
+      order by TITO.countycovidcases.daterecorded`
+      )
+      .then((result) => {
+        res.send(result.rows);
+      });
   });
 
-  app.get("/api/three/:id", (req, res) => {
-    console.log(req.params.id);
-    res.send("in endpoint three");
+  app.get("/api/three/:lowerBound/:upperBound", (req, res) => {
+    connection
+      .execute(
+        `
+    select TITO.countrycoviddata.dates as "day" , sum(TITO.countrycoviddata.newCases) as "numcases"
+  from (SELECT ISO,
+   PERCENT_RANK()
+    OVER (ORDER BY popdensity DESC) 
+      "Percentile Rank"
+   FROM TITO.country), TITO.countrycoviddata
+  where "Percentile Rank" < ${req.params.upperBound}
+    and "Percentile Rank" > ${req.params.lowerBound}
+    and ISO = countrycoviddata.iso_key
+  group by countrycoviddata.dates
+  order by countrycoviddata.dates
+    `
+      )
+      .then((result) => {
+        res.send(result.rows.filter((element) => element["numcases"] !== null));
+      });
   });
 
-  app.get("/api/four/:id", (req, res) => {
-    console.log(req.params.id);
-    res.send("in endpoint four");
+  //this will return two results array will look like this:
+  // [arr_for_graph_1, arr_for_graph_2]
+  app.get("/api/four/:smokerPercentage/:medianAge", (req, res) => {
+    connection
+      .execute(
+        `
+    SELECT SUM(countrycoviddata.newCases) as "numcases", 
+    countrycoviddata.dates as "Dates"
+    FROM TITO.countryhealthstats, TITO.countrycoviddata, TITO.country
+    WHERE countryhealthstats.iso = country.iso AND country.iso = countrycoviddata.iso_key
+    AND NOT countryhealthstats.maleSmokers > ${req.params.smokerPercentage}
+    AND NOT countryhealthstats.medianAge > ${req.params.medianAge}
+    group by countrycoviddata.dates
+    order by countrycoviddata.dates
+    `
+      )
+      .then((result) => {
+        connection
+          .execute(
+            `
+        SELECT SUM(countrycoviddata.newCases) as "numcases", 
+        countrycoviddata.dates as "Dates"
+        FROM TITO.countryhealthstats, TITO.countrycoviddata, TITO.country
+        WHERE countryhealthstats.iso = country.iso
+        AND country.iso = countrycoviddata.iso_key
+        AND countryhealthstats.maleSmokers > ${req.params.smokerPercentage}
+        AND countryhealthstats.medianAge > ${req.params.medianAge}
+        group by countrycoviddata.dates
+        order by countrycoviddata.dates
+        `
+          )
+          .then((result2) => {
+            res.send([
+              result.rows.filter((element) => element["numcases"] !== null),
+              result2.rows.filter((element) => element["numcases"] !== null),
+            ]);
+          });
+      });
   });
 
   app.get("/api/five/:id", (req, res) => {
-    console.log(req.params.id);
-    res.send("in endpoint five");
+    connection
+      .execute(
+        `
+        SELECT PERCENT_RANK() OVER (ORDER BY averageTemp) AS percenttemp, PERCENT_RANK() OVER (ORDER BY totalcases) AS percentcases
+        FROM(
+            SELECT tito.countycovidcases.daterecorded AS dates, AVG(meantemp) AS averagetemp, SUM(tito.countycovidcases.cases) AS totalcases
+            FROM (
+                TITO.countyweather 
+                    JOIN (SELECT FIPS_COUNTY, COUNTY FROM TITO.county) ON fips_fk = fips_county
+                    JOIN TITO.countycovidcases ON (fips_fk = fips_fkey AND TITO.countyweather.daterecorded = TITO.countycovidcases.daterecorded))
+                GROUP BY tito.countycovidcases.daterecorded
+                ORDER BY tito.countycovidcases.daterecorded
+        )
+        ORDER BY dates
+      `
+      )
+      .then((result) => {
+        // [{dateRecorded: date, avgTemp: 123, totalCases: 123}, {dateRecorded: date, avgTemp: 123, totalCases: 123}]
+        //
+        // array [{date: someDate, numcases: 123123}]
+        /*
+        let y = new Promise((resolve, reject) => {
+          resolve(
+            result.rows.map((element, index) => {
+              if (index == 0) return { newCases: element.totalCases };
+              return {
+                newCases: result.rows[index] - result.rows[index - 1],
+              };
+            })
+          );
+        });
+        */
+
+        res.send([
+          result.rows.map((element, index) => {
+            return { x: index, y: element["PERCENTTEMP"] };
+          }),
+          result.rows.map((element, index) => {
+            return { x: index, y: element["PERCENTCASES"] };
+          }),
+        ]);
+      });
   });
 
   //start the express server
