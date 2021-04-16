@@ -92,8 +92,16 @@ const MainPage = () => {
         .then((response) => {
           console.log("here");
           console.log(response.data);
-          setChartData(response.data[0]);
-          setChartData2(response.data[1]);
+          setChartData(
+            response.data[0].map((element, index) => {
+              return { x: index, y: element["numcases"] };
+            })
+          );
+          setChartData2(
+            response.data[1].map((element, index) => {
+              return { x: index, y: element["numcases"] };
+            })
+          );
         });
     } else if (trend === "Trend 5") {
       axios.get(`${BACKEND_URL}/api/five/asdf`).then((response) => {
