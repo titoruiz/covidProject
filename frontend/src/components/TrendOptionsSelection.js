@@ -38,25 +38,6 @@ const TrendOptionsSelection = (props) => {
             </option>
           </select>
         </div>
-
-        <p
-          style={{
-            color: "white",
-            marginBottom: 0,
-            float: "left",
-            marginRight: 10,
-          }}
-        >
-          Poverty Percentage:
-        </p>
-        <input
-          name="povertyRate"
-          type="number"
-          value={props.display.povertyRate || ""}
-          min="0"
-          max="30"
-          onChange={(event) => props.handleChange(event)}
-        />
       </div>
     );
   }

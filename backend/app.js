@@ -43,15 +43,67 @@ connectToDB(secrets.user, secrets.password).then((connection) => {
   //fall months: september, october, november.
   //winter months: december, january, february.
   app.get("/api/one/:season/:povertyRate", (req, res) => {
-    connection
-      .execute(
-        `SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata 
-        GROUP BY dates ORDER BY dates`
-      )
-      .then((result) => {
-        //filter out the days that have "null" amount of numcases
-        res.send(result.rows.filter((element) => element["numcases"] !== null));
-      });
+    if (req.params.season === "Summer") {
+      connection
+        .execute(
+          `
+        SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata
+        WHERE iso_key = 'USA' AND dates BETWEEN '01-JUN-20' AND '31-AUG-20'
+        GROUP BY dates
+        ORDER BY dates
+        `
+        )
+        .then((result) =>
+          res.send(
+            result.rows.filter((element) => element["numcases"] !== null)
+          )
+        );
+    } else if (req.params.season === "Spring") {
+      connection
+        .execute(
+          `
+        SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata
+        WHERE iso_key = 'USA' AND dates BETWEEN '01-MAR-20' AND '31-MAY-20'
+        GROUP BY dates
+        ORDER BY dates
+        `
+        )
+        .then((result) => {
+          res.send(
+            result.rows.filter((element) => element["numcases"] !== null)
+          );
+        });
+    } else if (req.params.season === "Fall") {
+      connection
+        .execute(
+          `
+        SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata
+        WHERE iso_key = 'USA' AND dates BETWEEN '01-SEP-20' AND '30-NOV-20'
+        GROUP BY dates
+        ORDER BY dates
+        `
+        )
+        .then((result) => {
+          res.send(
+            result.rows.filter((element) => element["numcases"] !== null)
+          );
+        });
+    } else {
+      connection
+        .execute(
+          `
+      SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata
+      WHERE iso_key = 'USA' AND dates BETWEEN '01-DEC-20' AND '28-FEB-21'
+      GROUP BY dates
+      ORDER BY dates
+      `
+        )
+        .then((result) => {
+          res.send(
+            result.rows.filter((element) => element["numcases"] !== null)
+          );
+        });
+    }
   });
 
   app.get("/api/two/:lowerBound/:upperBound", (req, res) => {
