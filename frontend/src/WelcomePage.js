@@ -18,13 +18,6 @@ const WelcomePage = () => {
           web app that would benefit usersOur team wanted to create a web app
           that would benefit usersOur team wanted to create a web app that would
           benefit usersOur team wanted to create a web app that would benefit
-          usersOur team wanted to create a web app that would benefit usersOur
-          team wanted to create a web app that would benefit usersOur team
-          wanted to create a web app that would benefit usersOur team wanted to
-          create a web app that would benefit usersOur team wanted to create a
-          web app that would benefit usersOur team wanted to create a web app
-          that would benefit usersOur team wanted to create a web app that would
-          benefit users
         </p>
         <h2 className="DatasetsTitle">Datasets Utilized:</h2>
         <p>

@@ -41,9 +41,24 @@ const TrendOptionsSelection = (props) => {
   else if (props.trend === "Trend 2") {
     return (
       <div className="Trend-Option">
-        <select value={props.trend}>
-          <option value="tr"></option>
-        </select>
+        <input
+          name="lowerBound2"
+          type="number"
+          value={props.display.lowerBound2 || ""}
+          min="0.00"
+          max="0.49"
+          step="0.01"
+          onChange={(event) => props.handleChange(event)}
+        />
+        <input
+          name="upperBound2"
+          type="number"
+          value={props.display.upperBound2 || ""}
+          min="0.50"
+          max="0.99"
+          step="0.01"
+          onChange={(event) => props.handleChange(event)}
+        />
       </div>
     );
   }
@@ -51,9 +66,24 @@ const TrendOptionsSelection = (props) => {
   else if (props.trend === "Trend 3") {
     return (
       <div className="Trend-Option">
-        <select value={props.trend}>
-          <option value="tr"></option>
-        </select>
+        <input
+          name="lowerBound3"
+          type="number"
+          value={props.display.lowerBound3 || ""}
+          min="0.00"
+          max="0.49"
+          step="0.01"
+          onChange={(event) => props.handleChange(event)}
+        />
+        <input
+          name="upperBound3"
+          type="number"
+          value={props.display.upperBound3 || ""}
+          min="0.50"
+          max="0.99"
+          step="0.01"
+          onChange={(event) => props.handleChange(event)}
+        />
       </div>
     );
   }
@@ -61,9 +91,24 @@ const TrendOptionsSelection = (props) => {
   else if (props.trend === "Trend 4") {
     return (
       <div className="Trend-Option">
-        <select value={props.trend}>
-          <option value="tr"></option>
-        </select>
+        <input
+          name="smokerPercentage"
+          type="number"
+          value={props.display.smokerPercentage || ""}
+          min="5"
+          max="80"
+          step="1"
+          onChange={(event) => props.handleChange(event)}
+        />
+        <input
+          name="medianAge"
+          type="number"
+          value={props.display.medianAge || ""}
+          min="25"
+          max="70"
+          step="1"
+          onChange={(event) => props.handleChange(event)}
+        />
       </div>
     );
   }
