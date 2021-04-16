@@ -1,6 +1,5 @@
 import React from "react";
 import schemaImage from "./schemaimg.png";
-import { Link } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import "./App.css";
 
@@ -12,7 +11,7 @@ const Schema = () => {
         <p className="Title">Schema Page</p>
       </header>
       <td class="CenterScreenImage">
-        <img src={schemaImage} />
+        <img alt="The Schema" src={schemaImage} />
       </td>
     </div>
   );

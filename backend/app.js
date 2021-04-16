@@ -38,10 +38,15 @@ connectToDB(secrets.user, secrets.password).then((connection) => {
   }
 
   //api endpoints to retrieve information from the database
+  //summer months: june, july, august.
+  //spring months: march, april, may.
+  //fall months: september, october, november.
+  //winter months: december, january, february.
   app.get("/api/one/:season/:povertyRate", (req, res) => {
     connection
       .execute(
-        'SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata GROUP BY dates ORDER BY dates'
+        `SELECT dates AS "day", SUM(newcases) AS "numcases" FROM tito.countrycoviddata 
+        GROUP BY dates ORDER BY dates`
       )
       .then((result) => {
         //filter out the days that have "null" amount of numcases
