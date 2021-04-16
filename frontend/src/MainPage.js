@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  ChartLabel,
-  LineSeries,
-  DiscreteColorLegend,
-} from "react-vis";
+import { XYPlot, XAxis, YAxis, ChartLabel, LineSeries } from "react-vis";
 import TrendSelection from "./components/TrendSelection";
+import TrendLegend from "./components/TrendLegend";
 import TrendOptionsSelection from "./components/TrendOptionsSelection";
 import NavBar from "./components/NavBar";
 import "./App.css";
@@ -154,12 +148,7 @@ const MainPage = () => {
             style={{ stroke: "red", strokeWidth: 3 }}
             data={chartData2}
           />
-          <DiscreteColorLegend
-            items={[
-              { title: "Data 1", color: "violet" },
-              { title: "Data 2", color: "red" },
-            ]}
-          />
+          <TrendLegend trend={trend} />
         </XYPlot>
       </div>
     </>

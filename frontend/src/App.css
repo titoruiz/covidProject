@@ -10,6 +10,10 @@ Body {
   justify-content: space-around;
 }
 
+.rv-discrete-color-legend-item__title {
+  color: #f3f6f7;
+}
+
 .CenterScreen {
   display: flex;
   flex-direction: column;
